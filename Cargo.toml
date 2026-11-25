@@ -1,0 +1,24 @@
+[package]
+name = "premosienge"
+# A versão da aplicação está em versao.json; esta não é usada.
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+base64 = "0.23.1"
+eframe = { version = "0.37.0", default-features = false, features = ["accesskit", "clipboard", "default_fonts", "glow"] }
+keyring = { version = "3", default-features = false, features = ["windows-native"] }
+mslnk = "0.1.8"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = { version = "1.0.154", features = ["preserve_order"] }
+ureq = { version = "3", default-features = false, features = ["native-tls"] }
+winreg = "0.56.0"
+
+[profile.release]
+strip = true
+lto = "thin"
+
+[build-dependencies]
+serde_json = "1.0.154"
+winresource = "0.1.34"

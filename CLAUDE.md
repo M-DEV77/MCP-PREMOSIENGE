@@ -44,3 +44,38 @@ fixa no código.
 - Apagar ou reescrever `historico-rg.md`.
 - Fazer push sem pedido do usuário.
 - Deixar senhas ou tokens em arquivos que o `.gitignore` não cobre: o commit inclui todo o resto.
+
+# Regra da aplicação
+
+MCP PremoSienge: aplicação local em Rust que leva os dados do Sienge ao Claude por MCP.
+Um único executável faz a interface, o servidor MCP e o instalador.
+
+## Acesso aos dados
+
+- Só pela API oficial do Sienge (`https://api.sienge.com.br`). O Sienge não permite acesso direto ao banco.
+- Somente leitura: apenas GET, e apenas caminhos de `recursos/catalogo.json`. Nunca criar, alterar ou apagar dados.
+- Parâmetros `_async*` e webhooks ficam bloqueados, porque podem enviar dados para fora.
+
+## Login e nível de acesso
+
+- O login é o usuário de API do Sienge. O usuário comum da plataforma não autentica na API;
+  não pedir nem guardar essa senha e não automatizar o login do site.
+- Cada pessoa deve ter o próprio usuário de API. Usuário compartilhado dá a todos o mesmo acesso.
+- Quem decide o acesso é o Sienge (autorizações por recurso). 401 e 403 são informados, nunca contornados.
+- A senha fica só no Gerenciador de Credenciais do Windows: nunca em arquivo, log, commit ou resposta do MCP.
+- Sair apaga a credencial e corta o acesso do Claude na mesma hora.
+
+## Interface e instalação
+
+- Telas: API, Login e Claude. Manter simples, em português.
+- A logo vem de `recursos/` (`logo.svg`, `logo.png`, `icone.ico`); o vermelho da marca é `#CF3034`. Não redesenhar.
+- O rodapé mostra o `indicador` de `versao.json`.
+- O instalador não exige administrador e preserva os outros MCPs do Claude.
+
+## Antes de concluir uma alteração
+
+1. `cargo test`
+2. `python versionar.py "Detalhes"` (antes de compilar: a versão entra no executável)
+3. `python ferramentas/gerar_entrega.py` (compila e monta `entrega/` com instalador e manual)
+
+Se uma tela mudar, atualize as imagens de `manual/img/` e o texto de `manual/manual.html`.

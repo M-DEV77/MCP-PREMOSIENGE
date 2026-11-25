@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Manual MCP PremoSienge</title>
+<style>
+  @page { size: A4; margin: 18mm 18mm 20mm;
+    @bottom-left { content: "{{INDICADOR}}"; font: 8pt "Segoe UI", sans-serif; color: #666; }
+    @bottom-right { content: counter(page) " / " counter(pages); font: 8pt "Segoe UI", sans-serif; color: #666; } }
+  @page :first { @bottom-left { content: ""; } @bottom-right { content: ""; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 11pt/1.5 "Segoe UI", Arial, sans-serif; color: #222; }
+  h1 { font-size: 30pt; margin: 0; line-height: 1.15; }
+  h2 { font-size: 18pt; margin: 0 0 4mm; padding-bottom: 2mm; border-bottom: 2px solid #cf3034; break-after: avoid; }
+  h3 { font-size: 12.5pt; margin: 6mm 0 1.5mm; break-after: avoid; }
+  p { margin: 0 0 3mm; }
+  section { break-before: page; }
+  .capa { height: 250mm; display: flex; flex-direction: column; justify-content: center; break-before: auto; }
+  .capa img { width: 58mm; margin-bottom: 12mm; }
+  .capa p { font-size: 14pt; color: #555; margin-top: 3mm; }
+  .capa .ver { font-size: 10pt; margin-top: 14mm; color: #666; }
+  figure { margin: 4mm 0 5mm; break-inside: avoid; }
+  figure img { display: block; width: 124mm; border: 1px solid #bbb; }
+  figure img.corte { height: 78mm; object-fit: cover; object-position: top; }
+  figcaption { font-size: 9pt; color: #666; margin-top: 1.5mm; }
+  ol, ul { margin: 0 0 3mm; padding-left: 7mm; }
+  li { margin-bottom: 1.2mm; }
+  ol.n { list-style: none; padding: 0; }
+  ol.n li { position: relative; padding-left: 9mm; min-height: 6.5mm; }
+  ol.n b.i { position: absolute; left: 0; top: .4mm; width: 5.8mm; height: 5.8mm; border-radius: 50%; background: #cf3034; color: #fff; font-size: 9pt; line-height: 5.8mm; text-align: center; }
+  .nota { background: #f3f3f3; padding: 3mm 4mm; margin: 4mm 0; break-inside: avoid; }
+  .nota b:first-child { color: #cf3034; }
+  table { width: 100%; border-collapse: collapse; font-size: 10pt; }
+  th, td { text-align: left; vertical-align: top; padding: 2mm 2.5mm; border-bottom: 1px solid #ccc; }
+  th { border-bottom: 2px solid #373435; }
+  tr { break-inside: avoid; }
+  code { font-family: Consolas, monospace; font-size: 10pt; }
+  svg { width: 100%; height: auto; display: block; margin: 5mm 0; }
+  .tela { border: 1px solid #bbb; background: #faf9f5; font-size: 9.5pt; line-height: 1.4; break-inside: avoid; margin: 3mm 0 1.5mm; color: #222; }
+  .tela .barra { padding: 2mm 4mm; border-bottom: 1px solid #ddd; font-weight: 600; }
+  .tela .duas { display: grid; grid-template-columns: 44mm 1fr; }
+  .tela nav { padding: 3mm; border-right: 1px solid #ddd; }
+  .tela nav div { padding: 1.2mm 2.5mm; }
+  .tela nav .sel { background: #e8e6dc; border-radius: 4px; font-weight: 600; }
+  .tela .area { padding: 4mm; }
+  .tela dl { display: grid; grid-template-columns: 26mm 1fr; gap: 1mm 3mm; margin: 2mm 0 3mm; }
+  .tela dt { color: #666; } .tela dd { margin: 0; overflow-wrap: anywhere; font-family: Consolas, monospace; font-size: 8.8pt; }
+  .tela .ok { color: #16784a; font-weight: 600; margin-left: 3mm; }
+  .tela .bt { display: inline-block; border: 1px solid #999; border-radius: 5px; padding: .8mm 3mm; background: #fff; margin-right: 2mm; }
+  .tela .bt.p { background: #222; color: #fff; border-color: #222; }
+  .tela .chave { display: inline-block; width: 8mm; height: 4.4mm; border-radius: 3mm; background: #2f6fdb; position: relative; vertical-align: middle; }
+  .tela .chave::after { content: ""; position: absolute; right: .5mm; top: .5mm; width: 3.4mm; height: 3.4mm; border-radius: 50%; background: #fff; }
+  .m { display: inline-block; width: 5.2mm; height: 5.2mm; border-radius: 50%; background: #cf3034; color: #fff; font-size: 8pt; line-height: 5.2mm; text-align: center; font-weight: 700; margin-left: 1.5mm; }
+  .leg { font-size: 9pt; color: #666; margin-bottom: 4mm; }
+  pre { background: #f3f3f3; padding: 3mm 4mm; font: 8.8pt/1.45 Consolas, monospace; white-space: pre-wrap; overflow-wrap: anywhere; margin: 2mm 0; break-inside: avoid; }
+</style>
+</head>
+<body>
+
+<div class="capa">
+  <img src="../recursos/logo.svg" alt="Logo">
+  <h1>MCP PremoSienge</h1>
+  <p>Manual de instalação e uso</p>
+  <div class="ver">{{INDICADOR}}</div>
+</div>
+
+<section>
+  <h2>1. O que o programa faz</h2>
+  <p>O MCP PremoSienge liga o Sienge ao Claude. Depois de configurado, você pergunta em português e o Claude busca a resposta no Sienge, dentro do que o seu usuário pode ver.</p>
+  <svg viewBox="0 0 700 170" role="img" aria-label="Você pergunta ao Claude, que consulta o MCP PremoSienge neste computador, que consulta a API do Sienge">
+    <defs><marker id="s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#373435"/></marker></defs>
+    <rect x="118" y="8" width="400" height="154" fill="none" stroke="#999" stroke-dasharray="5 4"/>
+    <text x="128" y="156" font-size="12" fill="#666">Seu computador</text>
+    <g font-size="15" text-anchor="middle" fill="#222">
+      <rect x="2" y="50" width="92" height="60" fill="#f3f3f3" stroke="#737476"/><text x="48" y="85">Você</text>
+      <rect x="140" y="50" width="130" height="60" fill="#f3f3f3" stroke="#737476"/><text x="205" y="85">Claude</text>
+      <rect x="330" y="50" width="170" height="60" fill="#cf3034"/><text x="415" y="85" fill="#fff">MCP PremoSienge</text>
+      <rect x="568" y="50" width="130" height="60" fill="#f3f3f3" stroke="#737476"/><text x="633" y="78">API do</text><text x="633" y="97">Sienge</text>
+    </g>
+    <g stroke="#373435" stroke-width="1.6" marker-start="url(#s)" marker-end="url(#s)"><path d="M96 80H138"/><path d="M272 80H328"/><path d="M502 80H566"/></g>
+    <text x="415" y="36" font-size="12" text-anchor="middle" fill="#666">login guardado no cofre do Windows</text>
+  </svg>
+  <ul>
+    <li><b>Somente leitura.</b> O programa consulta dados; não cria, altera nem apaga nada no Sienge.</li>
+    <li><b>Permissões do Sienge.</b> Quem define o que você pode consultar é o administrador do Sienge.</li>
+    <li><b>Senha protegida.</b> Fica no cofre de credenciais do Windows e não é enviada ao Claude.</li>
+  </ul>
+  <div class="nota"><b>Dados pessoais.</b> O resultado de cada consulta é enviado ao Claude para ele responder. Consulte só o necessário e siga as regras da empresa sobre a LGPD.</div>
+
+  <h3>Do que você precisa</h3>
+  <ul>
+    <li>Windows 10 ou 11 e internet.</li>
+    <li>Claude Desktop ou Claude Code instalado.</li>
+    <li>O subdomínio da empresa no Sienge. Em <code>https://minhaempresa.sienge.com.br</code>, é <code>minhaempresa</code>.</li>
+    <li>Um <b>usuário de API</b> e a senha dele, fornecidos pelo administrador do Sienge.</li>
+  </ul>
+
+  <h3>Para o administrador: criar o usuário de API</h3>
+  <p>O usuário e a senha comuns do Sienge não funcionam na API. Crie um usuário de API por pessoa:</p>
+  <ol>
+    <li>Entre no Sienge como administrador e abra <b>Integrações</b>, no canto superior direito.</li>
+    <li>Vá em <b>APIs &gt; Usuários de APIs</b> e crie um novo usuário.</li>
+    <li>Em <b>Autorizações por recurso</b>, marque somente o que essa pessoa pode consultar.</li>
+    <li>Entregue o usuário e a senha à pessoa. Se perder a senha, gere uma nova.</li>
+  </ol>
+</section>
+
+<section>
+  <h2>2. Instalar</h2>
+  <ol class="n">
+    <li><b class="i">1</b>Feche o Claude, inclusive o ícone perto do relógio. Abra <code>Instalador-MCP-PremoSienge.exe</code> e clique em <b>Instalar</b>.</li>
+  </ol>
+  <figure><img class="corte" src="img/01-instalar.png" alt="Janela do instalador com o botão Instalar"></figure>
+  <div class="nota"><b>Aviso do Windows.</b> O programa não tem assinatura digital, então o Windows pode mostrar um alerta. Se você recebeu o arquivo da sua empresa, clique em <b>Mais informações</b> e depois em <b>Executar assim mesmo</b>. Se não sabe de onde o arquivo veio, não execute.</div>
+  <ol class="n">
+    <li><b class="i">2</b>Confira os passos. O que aparecer em vermelho não foi concluído; veja a seção 8. Depois, clique em <b>Abrir e conectar ao Sienge</b>.</li>
+  </ol>
+  <figure><img class="corte" src="img/02-instalado.png" alt="Instalação concluída, com a lista de passos"></figure>
+</section>
+
+<section>
+  <h2>3. Configurar a API</h2>
+  <figure><img src="img/03-api.png" alt="Tela API"></figure>
+  <ol class="n">
+    <li><b class="i">1</b>Digite o subdomínio da empresa. Também pode colar o endereço completo do Sienge.</li>
+    <li><b class="i">2</b>Clique em <b>Salvar</b>. O programa passa para a tela Login.</li>
+  </ol>
+  <p>Se trocar o subdomínio depois, o login atual é encerrado e é preciso entrar de novo.</p>
+</section>
+
+<section>
+  <h2>4. Entrar</h2>
+  <figure><img class="corte" style="height:96mm" src="img/04-login.png" alt="Tela Login"></figure>
+  <ol class="n">
+    <li><b class="i">1</b>Digite o usuário de API.</li>
+    <li><b class="i">2</b>Digite a senha.</li>
+    <li><b class="i">3</b>Clique em <b>Entrar</b>. O programa confirma o acesso com o Sienge.</li>
+  </ol>
+  <figure><img class="corte" src="img/05-conectado.png" alt="Tela Login depois de conectar"><figcaption>Conectado. O botão Sair (4) apaga o login deste computador e o Claude perde o acesso na hora.</figcaption></figure>
+</section>
+
+<section>
+  <h2>5. Configurar o Claude</h2>
+  <p>O instalador já faz esta configuração. Use esta tela para conferir, refazer ou remover.</p>
+  <figure><img src="img/06-claude.png" alt="Tela Claude"></figure>
+  <ol class="n">
+    <li><b class="i">1</b>Situação no Claude Desktop e no Claude Code.</li>
+    <li><b class="i">2</b><b>Configurar automaticamente</b> refaz a configuração. Os outros MCPs que você usa são mantidos.</li>
+    <li><b class="i">3</b><b>Remover do Claude</b> tira só o MCP PremoSienge. O programa continua instalado.</li>
+    <li><b class="i">4</b><b>Desinstalar tudo</b> remove o programa; veja a seção 9.</li>
+  </ol>
+  <div class="nota"><b>Importante.</b> Depois de configurar, feche o Claude por completo, inclusive o ícone perto do relógio, e abra de novo.</div>
+</section>
+
+<section>
+  <h2>6. Como aparece no Claude</h2>
+  <div class="nota"><b>Sobre as figuras.</b> As figuras do Claude Desktop nesta seção são ilustrações, não capturas. Os nomes dos botões e menus são os do Claude Desktop 6.28899 em português; a posição pode mudar conforme a versão.</div>
+
+  <h3>6.1 Nas configurações do Claude Desktop</h3>
+  <p>Abra <b>Configurações &gt; Aplicativo para desktop</b>, clique em <b>Gerenciar</b> ao lado de <b>Extensões</b> e procure <b>Servidores MCP locais</b>. Em versões anteriores, fica em <b>Configurações &gt; Desenvolvedor</b>.</p>
+  <div class="tela">
+    <div class="barra">Configurações</div>
+    <div class="duas">
+      <nav><div>Geral</div><div>Conectores</div><div class="sel">Aplicativo para desktop</div></nav>
+      <div class="area">
+        <b>Servidores MCP locais</b>
+        <div style="margin-top:3mm"><b>premosienge</b><span class="m">1</span><span class="ok">Em execução</span><span class="m">2</span></div>
+        <dl><dt>Comando</dt><dd>C:\Users\seu.usuario\AppData\Local\Programs\MCP-PremoSienge\premosienge.exe<span class="m">3</span></dd><dt>Argumentos</dt><dd>mcp</dd></dl>
+        <span class="bt">Editar configuração</span><span class="bt">Ver logs</span><span class="m" style="margin-left:0">4</span>
+      </div>
+    </div>
+  </div>
+  <p class="leg">Ilustração.</p>
+  <ol class="n">
+    <li><b class="i">1</b>O nome do MCP no Claude é <code>premosienge</code>.</li>
+    <li><b class="i">2</b><b>Em execução</b> indica que está funcionando. Se aparecer <b>Falhou</b>, veja a seção 8.</li>
+    <li><b class="i">3</b>Comando e argumento gravados pelo instalador. O nome da pasta do usuário muda em cada computador.</li>
+    <li><b class="i">4</b><b>Ver logs</b> ajuda a TI a investigar falhas. Não é preciso editar nada à mão.</li>
+  </ol>
+  <div class="nota"><b>Claude em inglês.</b> Settings = Configurações; Desktop app = Aplicativo para desktop; Developer = Desenvolvedor; Local MCP servers = Servidores MCP locais; Running = Em execução; Connectors = Conectores; Always allow = Sempre permitir; Allow once = Permitir uma vez; Deny = Negar.</div>
+</section>
+
+<section>
+  <h3 style="margin-top:0">6.2 Na conversa</h3>
+  <p>Clique no botão <b>+</b> da caixa de mensagem e passe o mouse em <b>Conectores</b>. O <code>premosienge</code> aparece na lista e deve estar ligado.</p>
+  <div class="tela">
+    <div class="area">
+      <div style="width:78mm;border:1px solid #ccc;background:#fff;padding:2mm 3mm">
+        <div style="color:#666;margin-bottom:1.5mm">Conectores<span class="m">1</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:1mm 0"><b>premosienge</b><span><span class="chave"></span><span class="m">2</span></span></div>
+        <div style="border-top:1px solid #ddd;margin-top:1.5mm;padding-top:1.5mm">Gerenciar conectores</div>
+      </div>
+      <div style="border:1px solid #bbb;background:#fff;margin-top:2.5mm;padding:3mm 4mm;color:#777">Liste as obras do Sienge.<div style="margin-top:2mm;color:#222;font-size:13pt;line-height:1">+</div></div>
+    </div>
+  </div>
+  <p class="leg">Ilustração.</p>
+  <ol class="n">
+    <li><b class="i">1</b>Lista dos conectores disponíveis nesta conversa.</li>
+    <li><b class="i">2</b>Ligado: o Claude pode usar o Sienge. Desligue para não usar nesta conversa.</li>
+  </ol>
+
+  <h3>6.3 O pedido de permissão</h3>
+  <p>Ao usar uma ferramenta, o Claude pede a sua autorização:</p>
+  <div class="tela">
+    <div class="area">
+      <div style="margin-bottom:3mm"><b>O Claude quer usar Consultar dados do Sienge de premosienge</b></div>
+      <pre style="background:#fff;border:1px solid #ddd;margin:0 0 3mm">{
+  "caminho": "/public/api/v1/enterprises",
+  "parametros": { "limit": 50 }
+}</pre>
+      <span class="bt">Sempre permitir</span><span class="m" style="margin:0 3mm 0 -1mm">1</span><span class="bt">Permitir uma vez</span><span class="m" style="margin:0 3mm 0 -1mm">2</span><span class="bt">Negar</span><span class="m" style="margin:0 0 0 -1mm">3</span>
+    </div>
+  </div>
+  <p class="leg">Ilustração. O conteúdo mostra a consulta que será feita.</p>
+  <ol class="n">
+    <li><b class="i">1</b><b>Sempre permitir</b>: não pergunta mais para esta ferramenta.</li>
+    <li><b class="i">2</b><b>Permitir uma vez</b>: autoriza só esta consulta.</li>
+    <li><b class="i">3</b><b>Negar</b>: a consulta não é feita.</li>
+  </ol>
+  <p>O MCP não grava nada no Sienge, qualquer que seja a opção.</p>
+</section>
+
+<section>
+  <h3 style="margin-top:0">6.4 As ferramentas</h3>
+  <p>São quatro, todas de leitura:</p>
+  <table>
+    <tr><th style="width:36%">Nome no Claude</th><th>Para que serve</th><th style="width:20%">Gasta cota</th></tr>
+    <tr><td>Status da conexão<br><code>sienge_status</code></td><td>Versão, empresa e usuário conectado.</td><td>Não</td></tr>
+    <tr><td>Listar consultas disponíveis<br><code>sienge_listar_recursos</code></td><td>Procura no catálogo o que pode ser consultado.</td><td>Não</td></tr>
+    <tr><td>Detalhar uma consulta<br><code>sienge_detalhar_recurso</code></td><td>Mostra os filtros de uma consulta.</td><td>Não</td></tr>
+    <tr><td>Consultar dados do Sienge<br><code>sienge_consultar</code></td><td>Busca os dados no Sienge.</td><td>Sim, 1 por consulta</td></tr>
+  </table>
+
+  <h3>6.5 No arquivo de configuração</h3>
+  <p>O instalador grava este trecho em <code>claude_desktop_config.json</code>, na pasta <code>%LOCALAPPDATA%\Claude-Data\claude_…</code> (versões recentes) ou <code>%APPDATA%\Claude</code> (anteriores). Outros MCPs do arquivo são mantidos, e uma cópia de segurança é criada na mesma pasta.</p>
+  <pre>{
+  "mcpServers": {
+    "premosienge": {
+      "command": "C:\\Users\\seu.usuario\\AppData\\Local\\Programs\\MCP-PremoSienge\\premosienge.exe",
+      "args": [
+        "mcp"
+      ]
+    }
+  }
+}</pre>
+  <p>O usuário e a senha do Sienge não ficam neste arquivo.</p>
+
+  <h3>6.6 No Claude Code</h3>
+  <p>No terminal, o comando abaixo mostra se está conectado:</p>
+  <pre>claude mcp get premosienge
+
+premosienge:
+  Scope: User config (available in all your projects)
+  Status: ✔ Connected
+  Type: stdio
+  Command: C:\Users\seu.usuario\AppData\Local\Programs\MCP-PremoSienge\premosienge.exe
+  Args: mcp</pre>
+  <p class="leg">Saída real do Claude Code, resumida e com o caminho da pasta trocado.</p>
+</section>
+
+<section>
+  <h2>7. Usar no Claude</h2>
+  <p>Abra uma conversa no Claude e pergunte normalmente. Na primeira vez, o Claude pede permissão para usar as ferramentas do Sienge, como mostra a seção 6.</p>
+  <h3>Exemplos de perguntas</h3>
+  <table>
+    <tr><th>Assunto</th><th>Pergunta</th></tr>
+    <tr><td>Conexão</td><td>Estou conectado ao Sienge? Com qual usuário?</td></tr>
+    <tr><td>Obras</td><td>Liste as obras do Sienge.</td></tr>
+    <tr><td>Contas a pagar</td><td>Quais títulos a pagar foram lançados entre 01/10/2026 e 31/10/2026?</td></tr>
+    <tr><td>Compras</td><td>Mostre os pedidos de compra da obra 12 em outubro, por fornecedor.</td></tr>
+    <tr><td>Estoque</td><td>Qual o estoque atual do centro de custo 12?</td></tr>
+    <tr><td>Orçamento</td><td>Quais são as planilhas de orçamento da obra 12?</td></tr>
+    <tr><td>Vendas</td><td>Liste os contratos de venda do empreendimento 5.</td></tr>
+    <tr><td>O que existe</td><td>Quais consultas do Sienge estão disponíveis sobre medições?</td></tr>
+  </table>
+  <p style="margin-top:3mm">A resposta depende do que o seu usuário de API tem liberado.</p>
+  <h3>Para obter bons resultados</h3>
+  <ul>
+    <li>Informe período, obra ou empresa. Consultas menores são mais rápidas e completas.</li>
+    <li>Evite repetir a mesma consulta. Cada uma gasta a cota diária contratada com o Sienge; o pacote gratuito permite 100 por dia.</li>
+    <li>Se o Claude avisar que a resposta foi cortada, peça um período menor.</li>
+    <li>Confira os números importantes no Sienge antes de decidir com base neles.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>8. Problemas comuns</h2>
+  <table>
+    <tr><th style="width:42%">O que aparece</th><th>O que fazer</th></tr>
+    <tr><td>API não configurada</td><td>Preencha o subdomínio na tela API.</td></tr>
+    <tr><td>Nenhum usuário conectado</td><td>Entre na tela Login.</td></tr>
+    <tr><td>Não autorizado (401)</td><td>Confira usuário e senha de API. Pode ser também senha expirada, usuário inativo ou recurso não liberado: fale com o administrador.</td></tr>
+    <tr><td>Sem permissão (403)</td><td>Seu usuário não tem acesso a essa consulta. Peça a liberação ao administrador.</td></tr>
+    <tr><td>Registro não encontrado (404)</td><td>Confira o código informado e o subdomínio na tela API.</td></tr>
+    <tr><td>Limite de consultas atingido (429)</td><td>Aguarde um minuto. Se continuar, a cota do dia acabou.</td></tr>
+    <tr><td>Sienge indisponível (503)</td><td>O Sienge pode estar em manutenção, entre 00:00 e 06:30.</td></tr>
+    <tr><td>Sem conexão com o Sienge</td><td>Confira a internet e o firewall. O endereço usado é <code>api.sienge.com.br</code>.</td></tr>
+    <tr><td>O Claude não mostra o Sienge</td><td>Feche o Claude por completo, inclusive o ícone perto do relógio. Na tela Claude do programa, clique em Configurar automaticamente e só então abra o Claude.</td></tr>
+    <tr><td>Claude não encontrado neste computador</td><td>Instale o Claude e clique em Configurar automaticamente.</td></tr>
+    <tr><td>Arquivo não é um JSON válido</td><td>A configuração do Claude está danificada e nada foi alterado. Peça ajuda ao responsável pela TI.</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>9. Atualizar ou desinstalar</h2>
+  <h3>Atualizar</h3>
+  <p>Abra o novo <code>Instalador-MCP-PremoSienge.exe</code> e clique em <b>Instalar</b>. O login e o subdomínio são mantidos. Depois feche e abra o Claude. A versão em uso aparece no rodapé da janela.</p>
+  <h3>Desinstalar</h3>
+  <figure><img src="img/07-remover.png" alt="Confirmação de desinstalação"></figure>
+  <ol class="n">
+    <li><b class="i">1</b>Na tela Claude, clique em <b>Desinstalar tudo</b> e depois em <b>Sim, desinstalar</b>. O programa, o login e o MCP são removidos.</li>
+  </ol>
+  <p>Feche a janela para terminar. Também é possível desinstalar em <b>Configurações &gt; Aplicativos</b> do Windows.</p>
+</section>
+
+</body>
+</html>

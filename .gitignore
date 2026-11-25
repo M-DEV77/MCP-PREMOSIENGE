@@ -14,3 +14,7 @@ __pycache__/
 dist/
 build/
 *.log
+
+target/
+entrega/*.exe
+manual/prints/
