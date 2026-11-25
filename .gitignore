@@ -1,0 +1,16 @@
+# Credenciais: o commit de ciclo inclui tudo que não estiver aqui
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+credentials*.json
+.claude/settings.local.json
+
+# Gerados
+node_modules/
+__pycache__/
+.venv/
+dist/
+build/
+*.log
